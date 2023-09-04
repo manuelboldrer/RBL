@@ -8,7 +8,5 @@ Manuel Boldrer,  ́Alvaro Serra-G ́omez, Lorenzo Lyons, Javier Alonso-Mora, Lau
 # Prerequisites
 
 Python
-
 numpy
-
 matplotlib
