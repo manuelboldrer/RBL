@@ -7,6 +7,9 @@ Manuel Boldrer,  ́Alvaro Serra-G ́omez, Lorenzo Lyons, Javier Alonso-Mora, Lau
 
 # Prerequisites
 
-Python
 numpy
 matplotlib
+
+# Run the example
+
+python3 main.py -render

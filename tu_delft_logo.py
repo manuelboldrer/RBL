@@ -1,0 +1,13 @@
+#parameters["size"][31]= 0.1
+#parameters["size"][32]= 0.2
+#parameters["size"][33]= 0.3
+#parameters["size"][34]= 0.3
+#parameters["size"][35]= 0.3
+#parameters["size"][36]= 0.2
+#parameters["size"][37]= 0.1
+#parameters["size"][38]= 0.4
+#parameters["size"][39]= 0.1
+#parameters["size"][40]= 0.2
+#parameters["size"][41]= 0.3
+#parameters["size"][42]= 0.3
+#parameters["size"][43]= 0.1

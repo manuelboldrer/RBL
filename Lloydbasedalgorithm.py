@@ -5,27 +5,33 @@ from shapely.geometry import Point, Polygon
 
 class LloydBasedAlgorithm:
 
-    def __init__(self, radius, robot_pos, neighbors, step_size, R_gaussian, wp,  k, encumbrance, size_neighbors, dt):
+    def __init__(self, radius, step_size, k, encumbrance, size_neighbors, dt):
         self.radius = radius                       # cell dimension (half the sensing radius)
-        self.robot_pos = robot_pos                 # robot positions (x,y)
-
-        filtered_neighbors = [] 
-        filtered_indices = []
-        for i, neighbor_pos in enumerate(neighbors):
-            distance = np.linalg.norm(np.array(neighbor_pos) - np.array(robot_pos))
-            if distance <= 2*radius:
-                filtered_neighbors.append(neighbor_pos)
-                filtered_indices.append(i)
-    
-        self.neighbors =  filtered_neighbors       # neighbors within the sensing range
         self.step_size = step_size                 # spece discretization step
-        self.R_gaussian = R_gaussian               # value of spread factor \rho 
-        self.wp = wp                               # goal position \bar{p}
         self.k  = k                                # parameter k_p
         self.encumbrance = encumbrance             # robot encumbrance
-        if len(filtered_indices) > 0:
-            self.size_neighbors = size_neighbors[filtered_indices]   # neighbours' encumbrance
         self.time_step = dt                       # time step
+        self.size_neighbors_unfiltered = size_neighbors       # neighbours' encumbrance
+
+    def update(self, robot_pos, neighbors, R_gaussian, destination):
+        self.robot_pos = robot_pos
+        self.neighbors = neighbors
+        self.R_gaussian = R_gaussian
+        self.destination = destination
+        self.filter_neighbors()
+
+    def filter_neighbors(self):
+        filtered_neighbors = [] 
+        filtered_indices = []
+        for i, neighbor_pos in enumerate(self.neighbors):
+            distance = np.linalg.norm(np.array(neighbor_pos) - np.array(self.robot_pos))
+            if distance <= 2*self.radius:
+                filtered_neighbors.append(neighbor_pos)
+                filtered_indices.append(i)
+        self.neighbors = filtered_neighbors
+        self.size_neighbors = []
+        if len(filtered_indices) > 0:
+            self.size_neighbors = self.size_neighbors_unfiltered[filtered_indices]   # neighbours' encumbrance
 
     def points_inside_circle(self):
         points = []
@@ -98,7 +104,7 @@ class LloydBasedAlgorithm:
 
         scalar_values = []
         for x, y in zip(x_test, y_test):
-            tmp = (x - self.wp[0], y - self.wp[1])
+            tmp = (x - self.destination[0], y - self.destination[1])
             scalar_value = math.exp(-np.linalg.norm(tmp) / self.R_gaussian)
             scalar_values.append(scalar_value)
         return scalar_values  
@@ -147,7 +153,7 @@ class LloydBasedAlgorithm:
             xm = 0.5 * (self.robot_pos[0] + self.neighbors[j][0])
             ym = 0.5 * (self.robot_pos[1] + self.neighbors[j][1])
             dm = np.linalg.norm([xm - self.robot_pos[0], ym - self.robot_pos[1]])
-            if dm <  self.size_neighbors[j] + self.encumbrance:
+            if (dm <  self.size_neighbors[j] + self.encumbrance):
                 solx = xm + ( self.size_neighbors[j] + self.encumbrance - dm) * uvec[0]
                 soly = ym + ( self.size_neighbors[j] + self.encumbrance - dm) * uvec[1]       
                 if self.robot_pos[1] + (1 / m) * (self.robot_pos[0] - solx) - soly > 0:
