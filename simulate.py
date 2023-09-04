@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from RobotInit import RobotsInit
 from Lloydbasedalgorithm import LloydBasedAlgorithm
+from plot_utils import plot_circle, plot_line  
+
 
 def simulate( h, P ):
     #Initialize variables
@@ -74,8 +76,8 @@ def simulate( h, P ):
                 flag[j] = 0
 
             if P["flag_plot"] == 1:
-                Lloyd[j].plot_circle(current_position[j],P["size"][j],'blue')
-                Lloyd[j].plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
+                plot_circle(current_position[j],P["size"][j],'blue')
+                plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
             if P["write_file"] == 1:
                 with open(file_path, 'w') as file:
                     size = P["size"]

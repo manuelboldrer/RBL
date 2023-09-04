@@ -1,10 +1,10 @@
 import random
 import argparse
 from simulate import simulate
-N = 10
+N = 5
 
 parameters = {
-        "R_circle": 5,                # If greater than 0, robots in a circle (radius of the circle).
+        "R_circle": 3,                # If greater than 0, robots in a circle (radius of the circle).
                                       # If equal to 0, robots in a random room.
         "Xplot": 5,                   #x-axis plot
         "Yplot": 5,                   #y-axis plot
