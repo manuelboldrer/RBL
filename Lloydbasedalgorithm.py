@@ -5,16 +5,16 @@ from shapely.geometry import Point, Polygon
 
 class LloydBasedAlgorithm:
 
-    def __init__(self, radius, step_size, k, encumbrance, size_neighbors, dt):
+    def __init__(self, robot_pos, radius, step_size, k, encumbrance, size_neighbors, dt):
         self.radius = radius                       # cell dimension (half the sensing radius)
         self.step_size = step_size                 # spece discretization step
         self.k  = k                                # parameter k_p
         self.encumbrance = encumbrance             # robot encumbrance
         self.time_step = dt                       # time step
         self.size_neighbors_unfiltered = size_neighbors       # neighbours' encumbrance
+        self.robot_pos = robot_pos # initial robot position
 
-    def update(self, robot_pos, neighbors, R_gaussian, destination):
-        self.robot_pos = robot_pos
+    def aggregate(self, neighbors, R_gaussian, destination):
         self.neighbors = neighbors
         self.R_gaussian = R_gaussian
         self.destination = destination
@@ -210,12 +210,13 @@ class LloydBasedAlgorithm:
         #u = u / np.linalg.norm(u) * 1
         return u
 
-    def get_next_position(self):
+    def move(self):
         x, y = self.robot_pos  
         velocity = self.compute_control()
         velocity_x, velocity_y = velocity
         next_x =  x +  velocity_x * self.time_step
         next_y =  y +  velocity_y * self.time_step
+        self.robot_pos = next_x, next_y
         return next_x, next_y
 
 

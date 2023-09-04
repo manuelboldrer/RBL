@@ -23,8 +23,8 @@ def simulate( h, P ):
     Lloyd            = [0] * P["N"]
     Lloyd_virtual    = [0] * P["N"]
     for j in range(P["N"]):  
-        Lloyd[j]  = LloydBasedAlgorithm(P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"])
-        Lloyd_virtual[j] = LloydBasedAlgorithm(P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"])
+        Lloyd[j]  = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"])
+        Lloyd_virtual[j] = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"])
 
     while sum(flag) < P["N"] and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached            
         if P["flag_plot"] == 1:
@@ -35,11 +35,11 @@ def simulate( h, P ):
         step= step+1
         for j in range(P["N"]):   #for each robot
             position_other_robots=np.delete(Robots.positions, j, axis=0)
-            Lloyd[j].update(current_position[j],position_other_robots , R_gaussian[j], Robots.destinations[j])   
-            Lloyd_virtual[j].update(current_position[j], position_other_robots, R_gaussian[j], goal[j])
+            Lloyd[j].aggregate(position_other_robots , R_gaussian[j], Robots.destinations[j])   
+            Lloyd_virtual[j].aggregate(position_other_robots, R_gaussian[j], goal[j])
             
-            current_position_x[j], current_position_y[j] = Lloyd[j].get_next_position()
-            current_position[j] = current_position_x[j], current_position_y[j]
+            current_position_x[j], current_position_y[j] = Lloyd[j].move()
+            current_position[j] = current_position_x[j], current_position_y[j]            
             c1[j],c2[j] = Lloyd[j].get_centroid()
             c1_no_rotation[j],c2_no_rotation[j] =  Lloyd_virtual[j].get_centroid()
             
