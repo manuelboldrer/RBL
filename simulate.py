@@ -8,6 +8,7 @@ from plot_utils import plot_circle, plot_line
 
 def simulate( h, P ):
     #Initialize variables
+    tmp = 0
     c1 = [0,0] * P["N"]  #actual centroids 
     c2 = [0,0] * P["N"]  #virtual centroids (without neighbours)
     c1_no_rotation = [0,0] * P["N"]  # \bar p = e, centroids  
@@ -44,7 +45,10 @@ def simulate( h, P ):
             current_position[j] = current_position_x[j], current_position_y[j]            
             c1[j],c2[j] = Lloyd[j].get_centroid()
             c1_no_rotation[j],c2_no_rotation[j] =  Lloyd_virtual[j].get_centroid()
-            
+            u = Lloyd[j].compute_control()
+            if np.sqrt(u[0]**2+u[1]**2) >tmp:
+                tmp = np.sqrt(u[0]**2+u[1]**2)
+                
             #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
 
             #equation (8)
@@ -68,18 +72,20 @@ def simulate( h, P ):
             Robots.destinations[j][0] = current_position[j][0] + distance * math.cos(new_angle)
             Robots.destinations[j][1] = current_position[j][1] + distance * math.sin(new_angle)
         
-
             #condition used for stop the simulation
             if math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < P["d2"]:
                 flag[j] = 1
             else:
                 flag[j] = 0
 
+            if sum(flag) == P["N"] and j ==P["N"]-1:
+                 print("travel time:", round(step*dt,3), "(s).  max velocity:", round(tmp,3), "(m/s)" )
+
             if P["flag_plot"] == 1:
                 plot_circle(current_position[j],P["size"][j],'blue')
                 plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
             if P["write_file"] == 1:
-                with open(file_path, 'w') as file:
+                with open(file_path, 'a') as file:
                     size = P["size"]
                     dt = P["dt"]
                     k = P["k"]

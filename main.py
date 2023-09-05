@@ -22,7 +22,7 @@ parameters = {
         "R_gauss_min": 0.05,          # Minimum value for spreading factor rho.
         "R_gaussianD": [random.uniform(0.2, 0.2) for _ in range(N)],  # Desired spreading factor \rho^D.
         "size": [random.uniform(0.15, 0.15) for _ in range(N)],        # Robots encumbrance \delta
-        "k": [random.uniform(10, 10) for _ in range(N)],          # Control parameter k_p
+        "k": [random.uniform(5, 5) for _ in range(N)],          # Control parameter k_p
         "flag_plot": 0,
         "write_file": 0
 
