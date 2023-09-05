@@ -8,7 +8,7 @@ parameters = {
                                       # If equal to 0, robots in a random room.
         "Xplot": 5,                   #x-axis plot
         "Yplot": 5,                   #y-axis plot
-        "radius": 1.5,                # Half of the sensing radius: dimension of the cells.
+        "radius": 1,                # Half of the sensing radius: dimension of the cells.
         "xlim": (0, 5),               # Random room dimensions on the X-axis.
         "ylim": (0, 5),               # Random room dimensions on the Y-axis.
         "N": N,                       # Number of robots.
