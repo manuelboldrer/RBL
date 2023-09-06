@@ -160,9 +160,10 @@ class LloydBasedAlgorithm:
         self.robot_pos = next_x, next_y
         return next_x, next_y
 
-
 def compute_centroid(x, y, scalar_values):
     total_weight = sum(scalar_values)
     centroid_x = sum(x_i * w_i for x_i, w_i in zip(x, scalar_values)) / total_weight
     centroid_y = sum(y_i * w_i for y_i, w_i in zip(y, scalar_values)) / total_weight
     return centroid_x, centroid_y
+
+    
