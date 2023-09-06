@@ -6,7 +6,7 @@ from simulate import check_parameters
 N = 20                                 # Number of robots.
 
 parameters = {
-        "R_circle": 0,                # If greater than 0, robots in a circle (radius of the circle).
+        "R_circle": 3,                # If greater than 0, robots in a circle (radius of the circle).
                                       # If equal to 0, robots in a random room.
         "Xplot": 5,                   # x-axis plot
         "Yplot": 5,                   # y-axis plot
