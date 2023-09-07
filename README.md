@@ -1,7 +1,10 @@
-# HLB      
+# Overview
+
 
 <img src="videos/tud.gif" width="300" height="200"/>
 
+
+This is the implementation of the Heuristic Lloyd-based algorithm (HLB) for multi-robot navigation. 
 Multi-Robot Navigation
 
 This repository is the source code of the paper: 
