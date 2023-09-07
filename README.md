@@ -1,4 +1,4 @@
-# HLB <img src="videos/tud.gif" width="200" height="200"/>
+# HLB <img src="videos/tud.gif" width="100" height="100"/>
 
 Multi-Robot Navigation
 
