@@ -41,11 +41,11 @@ Test Simulation writing .txt file
 
 ## Acknowledgements
 
-Giovanni Franzese
-Alvaro Serra Gomez
-Lorenzo Lyons
-Laura Ferranti
-Javier Alonso-Mora
+Giovanni Franzese,
+Alvaro Serra Gomez,
+Lorenzo Lyons,
+Laura Ferranti,
+Javier Alonso-Mora.
 
 
 
