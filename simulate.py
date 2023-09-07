@@ -82,7 +82,7 @@ def simulate( h, P ):
             Robots.destinations[j][0] = current_position[j][0] + distance * math.cos(new_angle)
             Robots.destinations[j][1] = current_position[j][1] + distance * math.sin(new_angle)
             end = time.time()
-            print(end-start)
+            #print(end-start)
             #condition used for stop the simulation
 
             if math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < d2+P["dx"]:
