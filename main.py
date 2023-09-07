@@ -15,7 +15,7 @@ parameters = {
         "ylim": (0, 2),             # Random room dimensions on the Y-axis.
         "N": N,                       # Number of robots.
         "num_steps": 3000,            # Number of simulation steps.
-        "dx": 0.05,                    # Space discretization. [It introduce an approximation. The lower the better, but it cost computation]
+        "dx": 0.1,                    # Space discretization. [It introduce an approximation. The lower the better, but it cost computation]
         "dt": 0.033,                  # Time discretization. [do not change]
         "d1": 0.2,                    # d1 eq. (8). [do not change]
         "d3": 0.2,                    # d3 eq. (9). [do not change]
