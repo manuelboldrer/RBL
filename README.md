@@ -16,7 +16,7 @@ Random 10                  | Random 25          | Random 50
 ![](videos/a) | ![](videos/a) | ![](videos/a)
 
 
-![](videos/tud)
+![](videos/tud.mp4)
 
 ### Prerequisites
 - Python >3.9 & Pip
