@@ -16,8 +16,8 @@ Random 10                  | Random 25          | Random 50
 ![](videos/a) | ![](videos/a) | ![](videos/a)
 
 
-![](videos/tud.gif)
-
+![]()
+<img src="videos/tud.gif" width="50" height="50"/>
 ### Prerequisites
 - Python >3.9 & Pip
 - Python Packages as defined in [requirements.txt](requirements.txt) 
