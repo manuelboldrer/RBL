@@ -14,10 +14,13 @@ Install Python Packages
     
     pip install -r requirements.txt
 
-Test Simulation
+Test Simulation with render
 
     python3 main.py -render
 
+Test Simulation writing .txt file
+
+    python3 main.py -writefile
 
 
 
