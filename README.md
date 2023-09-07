@@ -3,13 +3,41 @@ Multi-Robot Navigation
 
 This repository is the source code of the paper: 
 "Distributed Networkless Multi-Robot Navigation in Crowded Cooperative Environments."
-Manuel Boldrer,  ́Alvaro Serra-G ́omez, Lorenzo Lyons, Javier Alonso-Mora, Laura Ferranti.
+Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Ferranti.
 
-# Prerequisites
+**[`PDF_arxiv`](https://arxiv.org/pdf/????)** 
 
-numpy
-matplotlib
+Circle 10                   |   Circle 25       | Circle 50 
+:-------------------------:|:-------------------------:|:-------------------------:
+![](videos/a)  | ![](videos/a) | ![](videos/a)
 
-# Run the example
+Random 10                  | Random 25          | Random 50 
+:-------------------------:|:-------------------------:|:-------------------------:
+![](videos/a) | ![](videos/a) | ![](videos/a)
 
-python3 main.py -render
+
+![](videos/tud)
+
+### Prerequisites
+- Python >3.9 & Pip
+- Python Packages as defined in [requirements.txt](requirements.txt) 
+
+## Setup
+Install Python Packages
+    
+    pip install -r requirements.txt
+
+Test Simulation with render
+
+    python3 main.py -render
+
+Test Simulation writing .txt file
+
+    python3 main.py -writefile
+
+
+
+
+
+
+

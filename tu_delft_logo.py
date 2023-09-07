@@ -1,3 +1,4 @@
+#parameters["size"]    = [0.5]*N
 #parameters["size"][31]= 0.1
 #parameters["size"][32]= 0.2
 #parameters["size"][33]= 0.3
