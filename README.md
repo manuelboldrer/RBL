@@ -5,11 +5,20 @@ This repository is the source code of the paper:
 "Distributed Networkless Multi-Robot Navigation in Crowded Cooperative Environments."
 Manuel Boldrer,  ́Alvaro Serra-G ́omez, Lorenzo Lyons, Javier Alonso-Mora, Laura Ferranti.
 
-# Prerequisites
+### Prerequisites
+- Python >3.9 & Pip
+- Python Packages as defined in [requirements.txt](requirements.txt) 
 
-numpy
-matplotlib
+## Setup
+Install Python Packages
+    
+    pip install -r requirements.txt
 
-# Run the example
+Test Simulation
 
-python3 main.py -render
+    python3 main.py -render
+
+
+
+
+
