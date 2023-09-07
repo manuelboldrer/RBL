@@ -10,15 +10,6 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
 
 **[`PDF_arxiv`](https://arxiv.org/pdf/????)** 
 
-Circle 10                   |   Circle 25       | Circle 50 
-:-------------------------:|:-------------------------:|:-------------------------:
-![](videos/a)  | ![](videos/a) | ![](videos/a)
-
-Random 10                  | Random 25          | Random 50 
-:-------------------------:|:-------------------------:|:-------------------------:
-![](videos/a) | ![](videos/a) | ![](videos/a)
-
-
 
 ### Prerequisites
 - Python >3.9 & Pip
