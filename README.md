@@ -1,4 +1,5 @@
-# HLB
+# HLB <img src="videos/tud.gif" width="200" height="200"/>
+
 Multi-Robot Navigation
 
 This repository is the source code of the paper: 
@@ -16,8 +17,7 @@ Random 10                  | Random 25          | Random 50
 ![](videos/a) | ![](videos/a) | ![](videos/a)
 
 
-![]()
-<img src="videos/tud.gif" width="50" height="50"/>
+
 ### Prerequisites
 - Python >3.9 & Pip
 - Python Packages as defined in [requirements.txt](requirements.txt) 
