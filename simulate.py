@@ -60,7 +60,7 @@ def simulate( h, P ):
             
             #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
             #equation (8)
-            d2 = 1.21#3*max(P["size"])
+            d2 = 2.1*max(P["size"])
             d4 = d2
             if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
                 R_gaussian[j] = R_gaussian[j] - 1*P["dt"]
@@ -85,7 +85,7 @@ def simulate( h, P ):
             #print(end-start)
             #condition used for stop the simulation
 
-            if 0: #math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < d2+P["dx"]:
+            if 0:# math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < d2+P["dx"]:
                 flag[j] = 1
             else:
                 flag[j] = 0
