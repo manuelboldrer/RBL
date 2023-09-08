@@ -1,7 +1,9 @@
 # Overview
 
 <p align="center">
-<img src="videos/tud.gif" width="600" height="400"/>
+    Circle N=50                
+:-------------------------:|
+![](videos/tud.gif) |
 </p>
 
 
