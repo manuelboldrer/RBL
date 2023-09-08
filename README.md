@@ -11,7 +11,6 @@ Circle N=50                  |   Random N=50       |
 
 
 This is the implementation of the Heuristic Lloyd-based algorithm (HLB) for multi-robot navigation. 
-Multi-Robot Navigation
 
 
 The simulator can run on all major platforms (Windows, Linux, and macOS). All that is required is cloning the repository and installing some necessary dependencies.
