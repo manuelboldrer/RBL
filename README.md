@@ -3,6 +3,9 @@
 <p align="center">
 <img src="videos/tud.gif" width="300" height="200"/>
 </p>
+
+
+
 Circle N=50                  |   Random N=50       | 
 :-------------------------:|:-------------------------:|
 ![](videos/random.gif)  | ![](videos/circle.gif) | 
