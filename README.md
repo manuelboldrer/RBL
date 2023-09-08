@@ -19,7 +19,7 @@ The simulator can run on all major platforms (Windows, Linux, and macOS). All th
     git clone https://github.com/manuelboldrer/HLB
 
 ### Reference
-This repository is the source code of the paper: 
+In this repository there is part of the code that was used to generate simulation results in the following paper: 
 
 "Distributed Networkless Multi-Robot Navigation in Crowded Cooperative Environments."
 Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Ferranti. Under Review at ...
