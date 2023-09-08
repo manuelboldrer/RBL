@@ -1,6 +1,6 @@
 # Overview
                
-![](videos/tud.gif) |
+![](videos/tud.gif) 
 
 
 
