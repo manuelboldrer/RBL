@@ -8,7 +8,7 @@
 
 Circle N=50                  |   Random N=50       | 
 :-------------------------:|:-------------------------:|
-![](videos/random.gif)  | ![](videos/circle.gif) | 
+![](videos/circle.gif)  | ![](videos/random.gif) | 
 
 
 This is the implementation of the Heuristic Lloyd-based algorithm (HLB) for multi-robot navigation. 
