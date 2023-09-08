@@ -3,7 +3,9 @@
 
 <img src="videos/tud.gif" width="300" height="200"/>
 
-<img src="videos/random.gif" width="600" height="400"/><img src="videos/circle.gif" width="600" height="400"/>
+Circle N=50                  |   Random N=50       | 
+:-------------------------:|:-------------------------:|
+![](videos/random.gif)  | ![](videos/circle.gif) | 
 
 
 This is the implementation of the Heuristic Lloyd-based algorithm (HLB) for multi-robot navigation. 
