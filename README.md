@@ -1,10 +1,8 @@
 # Overview
-
-<p align="center">
-    Circle N=50                
+               
 :-------------------------:|
 ![](videos/tud.gif) |
-</p>
+
 
 
 
