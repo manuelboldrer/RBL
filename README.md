@@ -1,7 +1,7 @@
 # Overview
 
 <p align="center">
-<img src="videos/tud.gif" width="300" height="200"/>
+<img src="videos/tud.gif" width="600" height="400"/>
 </p>
 
 
