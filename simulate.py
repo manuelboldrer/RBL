@@ -8,11 +8,12 @@ import time
 
 def check_parameters(P):
     for j in range(P["N"]):
-        if (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) < 3*P["size"][j]:
+        if (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) < 2*P["size"][j]:
             print("1. parameters not selected correctly. It may not converge.")
-        if P["d3"] >  (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) - 3*P["size"][j] or P["d1"] > (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) - 3*P["size"][j]:
-            print("2. parameters not selected correctly. It may not converge.")
-
+        if P["d3"] >  (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) - 2*P["size"][j] or P["d1"] > (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) - 2*P["size"][j]:
+            print("2. pcarameters not selected correctly. It may not converge.")
+        if P["k"][j]*P["dt"]> 1:
+            print("k_p is too big or dt is to big, safety issues")
 def simulate( h, P ):
     #Initialize variables
     tmp  = 0
@@ -60,7 +61,7 @@ def simulate( h, P ):
             
             #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
             #equation (8)
-            d2 = 2.1*max(P["size"])
+            d2 = 3.1*max(P["size"])
             d4 = d2
             if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
                 R_gaussian[j] = R_gaussian[j] - 1*P["dt"]
@@ -85,7 +86,7 @@ def simulate( h, P ):
             #print(end-start)
             #condition used for stop the simulation
 
-            if 0:# math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < d2+P["dx"]:
+            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < d2+P["dx"]:
                 flag[j] = 1
             else:
                 flag[j] = 0

@@ -3,26 +3,26 @@ import argparse
 from simulate import simulate
 from simulate import check_parameters
 
-N = 50                                 # Number of robots.
+N = 50                                # Number of robots.
 
 parameters = {
-        "R_circle": 5,                # If greater than 0, robots in a circle (radius of the circle).
+        "R_circle": 0,                # If greater than 0, robots in a circle (radius of the circle).
                                       # If equal to 0, robots in a random room.
         "Xplot": 10,                   # x-axis plot
         "Yplot": 10,                   # y-axis plot
-        "radius": 2,                # Half of the sensing radius: dimension of the cells r_{s,i}=r_{s}.
-        "xlim": (0, 7),             # Random room dimensions on the X-axis.
-        "ylim": (0, 7),             # Random room dimensions on the Y-axis.
+        "radius": 1.5,                # Half of the sensing radius: dimension of the cells r_{s,i}=r_{s}.
+        "xlim": (0, 3.5),             # Random room dimensions on the X-axis.
+        "ylim": (0, 3.5),             # Random room dimensions on the Y-axis.
         "N": N,                       # Number of robots.
         "num_steps": 3000,            # Number of simulation steps.
-        "dx": 0.1,                    # Space discretization. [It introduce an approximation. The lower the better, but it cost computation]
+        "dx": 0.075,                    # Space discretization. [It introduce an approximation. The lower the better, but it cost computation]
         "dt": 0.033,                  # Time discretization. [do not change]
         "d1": 0.1,                    # d1 eq. (8). [do not change]
         "d3": 0.1,                    # d3 eq. (9). [do not change]
         "R_gauss_min": 0.02,          # Minimum value for spreading factor rho. [do not change]
-        "R_gaussianD": [0.2]*N,       # Desired spreading factor \rho^D.
+        "R_gaussianD": [0.3]*N,       # Desired spreading factor \rho^D.
         "size": [random.uniform(0.2, 0.2) for _ in range(N)],        # Robots encumbrance \delta
-        "k": [10]*N,                   # Control parameter k_p
+        "k": [15]*N,                   # Control parameter k_p
         "flag_plot": 0,
         "write_file": 0
 }
