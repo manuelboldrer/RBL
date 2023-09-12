@@ -1,13 +1,16 @@
 # Overview
+               
+![](videos/tud.gif) 
 
 
-<img src="videos/tud.gif" width="300" height="200"/>
 
-<img src="videos/random.gif" width="600" height="400"/><img src="videos/circle.gif" width="600" height="400"/>
+
+Circle N=50                  |   Random N=50       | 
+:-------------------------:|:-------------------------:|
+![](videos/circle.gif)  | ![](videos/random.gif) | 
 
 
 This is the implementation of the Heuristic Lloyd-based algorithm (HLB) for multi-robot navigation. 
-Multi-Robot Navigation
 
 
 The simulator can run on all major platforms (Windows, Linux, and macOS). All that is required is cloning the repository and installing some necessary dependencies.
@@ -16,7 +19,7 @@ The simulator can run on all major platforms (Windows, Linux, and macOS). All th
     git clone https://github.com/manuelboldrer/HLB
 
 ### Reference
-This repository is the source code of the paper: 
+In this repository there is part of the code that was used to generate simulation results in the following paper: 
 
 "Distributed Networkless Multi-Robot Navigation in Crowded Cooperative Environments."
 Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Ferranti. Under Review at ...
