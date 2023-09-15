@@ -16,13 +16,13 @@ parameters = {
         "N": N,                       # Number of robots.
         "num_steps": 3000,            # Number of simulation steps.
         "dx": 0.075,                    # Space discretization. [It introduce an approximation. The lower the better, but it cost computation]
-        "dt": 0.033,                  # Time discretization. [do not change]
+        "dt": 0.1,                  # Time discretization. [do not change]
         "d1": 0.1,                    # d1 eq. (8). [do not change]
         "d3": 0.1,                    # d3 eq. (9). [do not change]
         "R_gauss_min": 0.02,          # Minimum value for spreading factor rho. [do not change]
         "R_gaussianD": [0.3]*N,       # Desired spreading factor \rho^D.
         "size": [random.uniform(0.2, 0.2) for _ in range(N)],        # Robots encumbrance \delta
-        "k": [15]*N,                   # Control parameter k_p
+        "k": [1]*N,                   # Control parameter k_p
         "flag_plot": 0,
         "write_file": 0
 }
@@ -39,7 +39,7 @@ if args.writefile:
 repetitions = 1000
 check_parameters(parameters)
 
-for h in range(102 , repetitions):
+for h in range(0 , repetitions):
     print("Number of repetition", h, "of", repetitions)
     simulate( h, parameters)
 

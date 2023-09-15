@@ -14,6 +14,8 @@ def check_parameters(P):
             print("2. pcarameters not selected correctly. It may not converge.")
         if P["k"][j]*P["dt"]> 1:
             print("k_p is too big or dt is to big, safety issues")
+        if P["k"] < 1:
+            print("Warning, of kp may be too small")
 def simulate( h, P ):
     #Initialize variables
     tmp  = 0
@@ -86,7 +88,7 @@ def simulate( h, P ):
             #print(end-start)
             #condition used for stop the simulation
 
-            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) < d2+P["dx"]:
+            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) <= d2+P["dx"]:
                 flag[j] = 1
             else:
                 flag[j] = 0
