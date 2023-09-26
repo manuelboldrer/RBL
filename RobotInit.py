@@ -23,8 +23,7 @@ class RobotsInit:
         positions = np.array([radius * np.cos(angles), radius * np.sin(angles)]).T
 
         destination_angles = angles - math.pi + 0 * math.pi / 2
-        destinations = np.array([radius * np.cos(destination_angles), radius * np.sin(destination_angles)]).T
-
+        destinations = np.array([radius * np.cos(destination_angles), radius * np.sin(destination_angles)]).T    
         return positions, destinations
 
     def generate_random_positions_and_destinations(self, N, xlim, ylim, size):
