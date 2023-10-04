@@ -5,7 +5,7 @@ from shapely.geometry import Point, Polygon
 
 class LloydBasedAlgorithm:
 
-    def __init__(self, robot_pos, radius, step_size, k, encumbrance, size_neighbors, dt):
+    def __init__(self, robot_pos, radius, step_size, k, encumbrance, size_neighbors, dt, v_max):
         self.radius = radius                       # cell dimension (half the sensing radius)
         self.step_size = step_size                 # spece discretization step
         self.k  = k                                # parameter k_p
@@ -13,6 +13,7 @@ class LloydBasedAlgorithm:
         self.time_step = dt                       # time step
         self.size_neighbors_unfiltered = size_neighbors       # neighbours' encumbrance
         self.robot_pos = robot_pos # initial robot position
+        self.v_max = v_max
 
     def aggregate(self, neighbors, R_gaussian, destination):
         self.neighbors = neighbors
@@ -147,8 +148,8 @@ class LloydBasedAlgorithm:
     def compute_control(self):
         centroid, _ = self.get_centroid()
         u = -self.k * (np.array(self.robot_pos) - np.array(centroid))
-        #if np.linalg.norm(u) > 1:
-        #u = u / np.linalg.norm(u) * 1
+        if np.linalg.norm(u) > self.v_max:
+            u = u / np.linalg.norm(u) * self.v_max
         return u
 
     def move(self):
