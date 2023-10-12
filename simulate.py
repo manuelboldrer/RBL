@@ -217,10 +217,14 @@ def simulate( h, P ):
                 #ax1.plot_circle(current_position[j],P["size"][j],'blue')
                 #if j < P["N_h"]:
                    #plot_circle(current_position[j],P["size"][j],'red')
-                #ax1.plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
+                   #ax1.plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
             for j in range(P["N"]):
                 circle = patches.Circle((current_position[j][0], current_position[j][1]), P["size"][j], fill=False, color='blue')
-                ax1.add_patch(circle)
+                circlegoals = patches.Circle((goal_copy[j][0], goal_copy[j][1]), 0.05, fill=True, color='red')
+
+                ax1.add_patch(circle)     
+                ax1.add_patch(circlegoals)
+
             fig1.canvas.flush_events()
 
             plt.pause(0.001)
