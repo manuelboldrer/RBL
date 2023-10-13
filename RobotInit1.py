@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
+import math
 
 class RobotsInit1:
     def __init__(self, parameters):
@@ -49,4 +49,6 @@ class RobotsInit1:
         #[list(t) for t in self.destinations]
         return self.positions, self.destinations
 
+
+    
 

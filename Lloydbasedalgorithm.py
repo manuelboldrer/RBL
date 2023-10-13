@@ -141,7 +141,7 @@ class LloydBasedAlgorithm:
         scalar_values_no_neigh = self.compute_scalar_value(x_in_no_neigh, y_in_no_neigh)
         # Compute centroid
         centroid = compute_centroid(x_in, y_in, scalar_values)
-        centroid_no_neighbors =compute_centroid(x_in_no_neigh, y_in_no_neigh, scalar_values_no_neigh)
+        centroid_no_neighbors = compute_centroid(x_in_no_neigh, y_in_no_neigh, scalar_values_no_neigh)
 
         return centroid, centroid_no_neighbors
        
