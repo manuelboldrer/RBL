@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from RobotInit import RobotsInit
 from RobotInit1 import RobotsInit1
-from Lloydbasedalgorithm import LloydBasedAlgorithm
+from Lloydbasedalgorithm import LloydBasedAlgorithm,apply_heuristic
 from plot_utils import plot_circle, plot_line  
 import time
 import matplotlib.patches as patches
@@ -20,12 +20,9 @@ def check_parameters(P):
         if P["k"][j] < 1:
             print("Warning, of kp may be too small")
 
-
 def simulate( h, P ):
     #Initialize variables
-    collisions = 0
     tmp  = 0
-    tmp_count = [0] * P["N"]
     c1 = [0,0] * P["N"]  #actual centroids 
     c2 = [0,0] * P["N"]  #virtual centroids (without neighbours)
     c1_no_rotation = [0,0] * P["N"]  # \bar p = e, centroids  
@@ -47,7 +44,6 @@ def simulate( h, P ):
         Robots = RobotsInit(P)
     
     current_position = Robots.positions
-    #goal             = Robots.destinations.copy() #goal positions   
     goal= copy.deepcopy(Robots.destinations)
 
     maxX,maxY = max(goal, key=lambda x: x[0])
@@ -68,8 +64,6 @@ def simulate( h, P ):
     for j in range(P["N"]):  
         Lloyd[j]  = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"],P["v_max"][j])
         Lloyd_virtual[j] = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"],P["v_max"][j])
-      
-        #Lloyd_virtual1[j] = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"],P["v_max"][j])
     plt.ion()
     fig1, ax1 = plt.subplots()
     ax1.axis('equal')
@@ -96,24 +90,7 @@ def simulate( h, P ):
         step= step+1
         for j in range(P["N"]):   #for each robot
             start = time.time()
-            #if flag[j] == 1:
-            #    tmp_count[j] = tmp_count[j] + 1
-            #    goal[j] =   random.choice(goal_copy)
-            #    flag[j] == 0
-            #    if j > P["N_h"]-1:
-            #        if tmp_count[j] > 5:
-            #            goal[j] = goal_copy[j]
-            #            flag[j] == 1
-            #    else:
-            #        if tmp_count[j] > 5:
-            #            goal[j] = goal_copy[j]
-            #            flag[j] == 1
-
-
-
-            #position_other_robots=np.delete(Robots.positions, [j] + list(range(P["N_h"]-1)), axis=0)
             position_other_robots_and_humans = np.delete(Robots.positions, j , axis=0)
-
             if j < P["N_h"]:
                 Lloyd[j].aggregate([] , R_gaussian[j], Robots.destinations[j])   
                 Lloyd_virtual[j].aggregate([], R_gaussian[j], goal[j])
@@ -129,33 +106,36 @@ def simulate( h, P ):
             c1_no_rotation[j],c2_no_rotation[j] =  Lloyd_virtual[j].get_centroid()
             #c1_no_humans[j],c2_no_humans[j] = Lloyd_virtual1[j].get_centroid()
 
-            #u = Lloyd[j].compute_control()
-            #if np.sqrt(u[0]**2+u[1]**2) >tmp:
-            #    tmp = np.sqrt(u[0]**2+u[1]**2)
-            
-            #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
-            #equation (8)
-            d2 = 3*max(P["size"])
+            u = Lloyd[j].compute_control()
+            if np.sqrt(u[0]**2+u[1]**2) >tmp:
+                tmp = np.sqrt(u[0]**2+u[1]**2)
+            d2 = 3 * max(P["size"])
             d4 = d2
+            apply_heuristic(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4)
+
+            #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
+            #d2 = 3*max(P["size"])
+            #d4 = d2
+            ##if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
             #if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
-            if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
-                R_gaussian[j] = R_gaussian[j] - 1*P["dt"]
-                R_gaussian[j] = max(R_gaussian[j], P["R_gauss_min"])
-            else:
-                R_gaussian[j]= R_gaussian[j] - 1*P["dt"]*(R_gaussian[j]-P["R_gaussianD"][j])
+            #    R_gaussian[j] = R_gaussian[j] - 1*P["dt"]
+            #    R_gaussian[j] = max(R_gaussian[j], P["R_gauss_min"])
+            #else:
+            #    R_gaussian[j]= R_gaussian[j] - 1*P["dt"]*(R_gaussian[j]-P["R_gaussianD"][j])
                  #equation (9)
-            if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d4 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d3"]:# and distancemin[j] < size[j]+max(size)+1:
-                th[j] = min(th[j] + 1*P["dt"], math.pi/2.1)
-            else:
-                th[j] = max(0, th[j] - 1*P["dt"] )
-            if th[j] == math.pi/2.1 and abs(np.linalg.norm(np.array(current_position[j]) - np.array(c1_no_rotation[j]))  > np.linalg.norm(np.array(current_position[j]) - np.array(c1[j]))):
-                th[j] = 0 
-            angle     = math.atan2(goal[j][1] - current_position[j][1], goal[j][0] - current_position[j][0])
-            new_angle = angle - th[j]
-            distance  = math.sqrt((goal[j][0] - current_position[j][0])**2 + (goal[j][1] - current_position[j][1])**2)
-            Robots.destinations[j][0] = current_position[j][0] + distance * math.cos(new_angle)
-            Robots.destinations[j][1] = current_position[j][1] + distance * math.sin(new_angle)
-            end = time.time()
+            #if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d4 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d3"]:# and distancemin[j] < size[j]+max(size)+1:
+            #    th[j] = min(th[j] + 1*P["dt"], math.pi/2.1)
+            #else:
+            #    th[j] = max(0, th[j] - 1*P["dt"] )
+            #if th[j] == math.pi/2.1 and abs(np.linalg.norm(np.array(current_position[j]) - np.array(c1_no_rotation[j]))  > np.linalg.norm(np.array(current_position[j]) - np.array(c1[j]))):
+            #    th[j] = 0 
+            #angle     = math.atan2(goal[j][1] - current_position[j][1], goal[j][0] - current_position[j][0])
+            #new_angle = angle - th[j]
+            #distance  = math.sqrt((goal[j][0] - current_position[j][0])**2 + (goal[j][1] - current_position[j][1])**2)
+            #Robots.destinations[j][0] = current_position[j][0] + distance * math.cos(new_angle)
+            #Robots.destinations[j][1] = current_position[j][1] + distance * math.sin(new_angle)
+            #end = time.time()
+            
             #print(end-start)
             #condition used for stop the simulation
 
@@ -165,7 +145,7 @@ def simulate( h, P ):
                 flag[j] = 0
 
             if sum(flag) == P["N"] and j ==P["N"]-1:
-                print("travel time:", round(step*P["dt"],3), "(s).  max velocity:", round(tmp,3), "(m/s). max computational time")
+                print("travel time:", round(step*P["dt"],3), "(s).  max velocity:", round(tmp,3), "(m/s)")
                 plt.close()
             if P["write_file"] == 1:
                 with open(file_path, 'a') as file:
@@ -207,8 +187,8 @@ def simulate( h, P ):
                    #plot_circle(current_position[j],P["size"][j],'red')
                    #ax1.plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
             for j in range(P["N"]):
-                circle = patches.Circle((current_position[j][0], current_position[j][1]), P["size"][j], fill=False, color='blue')
-                circlegoals = patches.Circle((goal[j][0], goal[j][1]), 0.05, fill=True, color='red')
+                circle = patches.Circle((current_position[j][0], current_position[j][1]), P["size"][j], fill=False, color=(R_gaussian[j]/max(P["R_gaussianD"]),0.7,0.7))
+                circlegoals = patches.Circle((goal[j][0], goal[j][1]), 0.05, fill=True, color=((j+1)/(P["N"]+1),0.7,0.7))
 
                 ax1.add_patch(circle)     
                 ax1.add_patch(circlegoals)
@@ -218,7 +198,7 @@ def simulate( h, P ):
             plt.pause(0.001)
             for circle in ax1.patches:
                 circle.remove()
-            fig1.canvas.flush_events()
+            #fig1.canvas.flush_events()
 
 
 
