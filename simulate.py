@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from RobotInit import RobotsInit
 from RobotInit1 import RobotsInit1
-from Lloydbasedalgorithm import LloydBasedAlgorithm,apply_heuristic
+from Lloydbasedalgorithm import LloydBasedAlgorithm, applyrules
 from plot_utils import plot_circle, plot_line  
 import time
 import matplotlib.patches as patches
@@ -60,7 +60,6 @@ def simulate( h, P ):
 
 
 
-
     for j in range(P["N"]):  
         Lloyd[j]  = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"],P["v_max"][j])
         Lloyd_virtual[j] = LloydBasedAlgorithm(Robots.positions[j], P["radius"], P["dx"], P["k"][j], P["size"][j], np.delete(P["size"], j, axis=0), P["dt"],P["v_max"][j])
@@ -73,7 +72,7 @@ def simulate( h, P ):
     ax1.grid()
 
 
-    while sum(flag) < P["N"] and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached            
+    while sum(flag) < P["N"] and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached         
         if P["flag_plot"] == 1:
             for j in range(P["N"]): 
                 if Robots.positions[j][0] < minX:
@@ -111,7 +110,7 @@ def simulate( h, P ):
                 tmp = np.sqrt(u[0]**2+u[1]**2)
             d2 = 3 * max(P["size"])
             d4 = d2
-            apply_heuristic(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4)
+            applyrules(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4)
 
             #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
             #d2 = 3*max(P["size"])
@@ -139,7 +138,7 @@ def simulate( h, P ):
             #print(end-start)
             #condition used for stop the simulation
 
-            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) <= d2+P["dx"]:
+            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) <= P["radius"]:#d2+P["dx"]:
                 flag[j] = 1
             else:
                 flag[j] = 0

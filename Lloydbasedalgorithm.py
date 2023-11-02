@@ -1,18 +1,17 @@
 import math
 import numpy as np
-import matplotlib.pyplot as plt
-from shapely.geometry import Point, Polygon
+
 
 class LloydBasedAlgorithm:
 
     def __init__(self, robot_pos, radius, step_size, k, encumbrance, size_neighbors, dt, v_max):
-        self.radius = radius                       # cell dimension (half the sensing radius)
-        self.step_size = step_size                 # spece discretization step
-        self.k  = k                                # parameter k_p
-        self.encumbrance = encumbrance             # robot encumbrance
-        self.time_step = dt                       # time step
+        self.radius = radius                        # cell dimension (half the sensing radius)
+        self.step_size = step_size                  # spece discretization step
+        self.k  = k                                 # parameter k_p
+        self.encumbrance = encumbrance              # robot encumbrance
+        self.time_step = dt                         # time step
         self.size_neighbors_unfiltered = size_neighbors       # neighbours' encumbrance
-        self.robot_pos = robot_pos # initial robot position
+        self.robot_pos = robot_pos                  # initial robot position
         self.v_max = v_max
 
     def aggregate(self, neighbors, R_gaussian, destination):
@@ -20,19 +19,6 @@ class LloydBasedAlgorithm:
         self.R_gaussian = R_gaussian
         self.destination = destination
         self.filter_neighbors()
-
-    def filter_neighbors_old(self):
-        filtered_neighbors = [] 
-        filtered_indices = []
-        for i, neighbor_pos in enumerate(self.neighbors):
-            distance = np.linalg.norm(np.array(neighbor_pos) - np.array(self.robot_pos))
-            if distance <= 2*self.radius:
-                filtered_neighbors.append(neighbor_pos)
-                filtered_indices.append(i)
-        self.neighbors = filtered_neighbors
-        self.size_neighbors = []
-        if len(filtered_indices) > 0:
-            self.size_neighbors = self.size_neighbors_unfiltered[filtered_indices]   # neighbours' encumbrance
 
     def filter_neighbors(self):
         neighbor_positions = np.array(self.neighbors)
@@ -43,26 +29,6 @@ class LloydBasedAlgorithm:
 
         self.neighbors = neighbor_positions[valid_indices].tolist()
         self.size_neighbors = [self.size_neighbors_unfiltered[i] for i in valid_indices]
-
-    def points_inside_circle_old(self):
-        points = []
-        x_center, y_center = self.robot_pos
-
-        x_min = int((x_center - self.radius) / self.step_size)
-        x_max = int((x_center + self.radius) / self.step_size)
-        y_min = int((y_center - self.radius) / self.step_size)
-        y_max = int((y_center + self.radius) / self.step_size)
-
-        for x in range(x_min, x_max + 1):
-            for y in range(y_min, y_max + 1):
-                x_coord = x * self.step_size
-                y_coord = y * self.step_size
-
-                distance = math.sqrt((x_coord - x_center) ** 2 + (y_coord - y_center) ** 2)
-                if distance <= self.radius:
-                    points.append((x_coord, y_coord))
-
-        return points
     
     def find_closest_points_old(self, points):
         # Convert points, robot_pos, and neighbors to NumPy arrays for easy computation
@@ -115,23 +81,12 @@ class LloydBasedAlgorithm:
 
         return closer_points.tolist()
 
-    def compute_scalar_value_old(self, x_test, y_test):
-        scalar_values = []
-        for x, y in zip(x_test, y_test):
-            tmp = (x - self.destination[0], y - self.destination[1])
-            scalar_value = math.exp(-np.linalg.norm(tmp) / self.R_gaussian)
-            scalar_values.append(scalar_value)
-        return scalar_values  
-
     def compute_scalar_value(self, x_test, y_test):
         x_test = np.array(x_test)
         y_test = np.array(y_test)
-
         tmp = np.column_stack((x_test - self.destination[0], y_test - self.destination[1]))
-        distances = np.linalg.norm(tmp, axis=1)
-        
+        distances = np.linalg.norm(tmp, axis=1)       
         scalar_values = np.exp(-distances / self.R_gaussian)
-
         return scalar_values.tolist()
     
     def account_encumbrance(self, points):
@@ -171,62 +126,6 @@ class LloydBasedAlgorithm:
 
         new_points = [point for i, point in enumerate(points) if i not in index]
         return new_points
-
-    def account_encumbrance_old(self, points):
-        index = []
-        for j in range(len(self.neighbors)):
-            uvec = np.array([self.robot_pos[0]-self.neighbors[j][0], self.robot_pos[1]-self.neighbors[j][1]]) / np.linalg.norm([self.robot_pos[0]-self.neighbors[j][0], self.robot_pos[1]-self.neighbors[j][1]])
-            delta_y = self.robot_pos[0]-self.neighbors[j][0]
-            if  np.abs(delta_y) < 0.001:
-                delta_y = 0.001
-
-            m = (self.robot_pos[1]-self.neighbors[j][1]) / (delta_y)
-            if np.abs(m) < 0.001:
-                m = 0.001
-            
-            #m = (self.robot_pos[1]-self.neighbors[j][1]) / (self.robot_pos[0]-self.neighbors[j][0])
-            xm = 0.5 * (self.robot_pos[0] + self.neighbors[j][0])
-            ym = 0.5 * (self.robot_pos[1] + self.neighbors[j][1])
-            dm = np.linalg.norm([xm - self.robot_pos[0], ym - self.robot_pos[1]])
-            if (dm <  self.size_neighbors[j] + self.encumbrance):
-                solx = xm + ( self.size_neighbors[j] + self.encumbrance - dm) * uvec[0]
-                soly = ym + ( self.size_neighbors[j] + self.encumbrance - dm) * uvec[1]       
-                if self.robot_pos[1] + (1 / m) * (self.robot_pos[0] - solx) - soly > 0:
-                    for i in range(len(points)):
-                        if points[i][1] + (1 / m) * (points[i][0] - solx) - soly < 0:
-                            index.append(i)
-                else:
-                    for i in range(len(points)):
-                        if points[i][1] + (1 / m) * (points[i][0] - solx) - soly > 0:
-                            index.append(i)
-        new_points = [point for i, point in enumerate(points) if i not in index]
-        return new_points
-
-    def get_centroid_old(self):
-        # Get points inside the circle
-        circle_points = self.points_inside_circle()
-        # Compute the Voronoi cell
-        if len(self.neighbors)>0:
-            voronoi_circle_intersection = self.find_closest_points(circle_points)
-            # Account encumbrance
-            voronoi_circle_intersection_and_encumbrance = self.account_encumbrance(voronoi_circle_intersection)
-            # Separate x and y coordinates for plotting
-            #print(voronoi_circle_intersection)
-            if len(voronoi_circle_intersection_and_encumbrance) == 0:
-                voronoi_circle_intersection_and_encumbrance = [self.robot_pos]
-            x_in, y_in = zip(*voronoi_circle_intersection_and_encumbrance)    
-        else:
-            x_in, y_in = zip(*circle_points)  
-        
-        x_in_no_neigh, y_in_no_neigh = zip(*circle_points)    
-            # Compute scalar values
-        scalar_values = self.compute_scalar_value(x_in, y_in)
-        scalar_values_no_neigh = self.compute_scalar_value(x_in_no_neigh, y_in_no_neigh)
-        # Compute centroid
-        centroid = compute_centroid(x_in, y_in, scalar_values)
-        centroid_no_neighbors = compute_centroid(x_in_no_neigh, y_in_no_neigh, scalar_values_no_neigh)
-
-        return centroid, centroid_no_neighbors
        
     def get_centroid(self):
         # Get points inside the circle
@@ -268,13 +167,6 @@ class LloydBasedAlgorithm:
                                         np.sum(y_in_no_neigh * scalar_values_no_neigh) / np.sum(scalar_values_no_neigh)])
 
         return centroid, centroid_no_neighbors
-    
-    def compute_control_old(self):
-        centroid, _ = self.get_centroid()
-        u = -self.k * (np.array(self.robot_pos) - np.array(centroid))
-        if np.linalg.norm(u) > self.v_max:
-            u = u / np.linalg.norm(u) * self.v_max
-        return u
        
     def compute_control(self):
         centroid, _ = self.get_centroid()
@@ -291,19 +183,13 @@ class LloydBasedAlgorithm:
         return next_x, next_y
 
 
-def compute_centroid_old(x, y, scalar_values):
-    total_weight = sum(scalar_values)
-    centroid_x = sum(x_i * w_i for x_i, w_i in zip(x, scalar_values)) / total_weight
-    centroid_y = sum(y_i * w_i for y_i, w_i in zip(y, scalar_values)) / total_weight
-    return centroid_x, centroid_y
-
 def compute_centroid(x, y, scalar_values):
     total_weight = np.sum(scalar_values)
     centroid_x = np.sum(x * scalar_values) / total_weight
     centroid_y = np.sum(y * scalar_values) / total_weight
     return centroid_x, centroid_y
 
-def apply_heuristic(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4):
+def applyrules(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4):
     c1_j = np.array(c1[j])
     current_j = np.array(current_position[j])
 
@@ -317,12 +203,12 @@ def apply_heuristic(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots
     # second condition
     dist_c1_c2_d4 = dist_c1_c2 > d4
     if dist_c1_c2_d4 and np.linalg.norm(current_j - c1_j) < P["d3"]:
-        th[j] = min(th[j] + P["dt"], math.pi / 2.1)
+        th[j] = min(th[j] + P["dt"], math.pi / 2)
     else:
         th[j] = max(0, th[j] - P["dt"])
 
     # third condition
-    if th[j] == math.pi / 2.1 and np.linalg.norm(current_j - np.array(c1_no_rotation[j])) > np.linalg.norm(current_j - c1_j):
+    if th[j] == math.pi / 2 and np.linalg.norm(current_j - np.array(c1_no_rotation[j])) > np.linalg.norm(current_j - c1_j):
         th[j] = 0
 
     # Compute the angle and new position
@@ -331,3 +217,20 @@ def apply_heuristic(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots
     distance = math.sqrt((goal[j][0] - current_j[0]) ** 2 + (goal[j][1] - current_j[1]) ** 2)
     Robots.destinations[j][0] = current_j[0] + distance * math.cos(new_angle)
     Robots.destinations[j][1] = current_j[1] + distance * math.sin(new_angle)
+
+def points_inside_circle0(self):
+            x_min = int(( self.radius) / self.step_size)
+            x_max = int(( self.radius) / self.step_size)
+            y_min = int(( self.radius) / self.step_size)
+            y_max = int(( self.radius) / self.step_size)
+
+            x_coords = np.arange(x_min, x_max + 1) * self.step_size
+            y_coords = np.arange(y_min, y_max + 1) * self.step_size
+
+            x, y = np.meshgrid(x_coords, y_coords)
+            distances = np.sqrt((x) ** 2 + (y) ** 2)
+            
+            valid_indices = np.where(distances <= self.radius)
+            points = list(zip(x[valid_indices], y[valid_indices]))
+
+            return points
