@@ -30,8 +30,8 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
  
 
 ### Prerequisites
-- Python >3.9 & Pip
 - Python Packages as defined in [requirements.txt](requirements.txt) 
+(matplotlib, numpy, shapely)
 
 ## Setup
 Install Python Packages
@@ -40,11 +40,11 @@ Install Python Packages
 
 Test Simulation with render
 
-    python3 main.py -render
+    python main.py -render
 
 Test Simulation writing .txt file
 
-    python3 main.py -writefile
+    python main.py -writefile
 
 ## Acknowledgements
 
