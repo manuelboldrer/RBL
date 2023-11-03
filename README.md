@@ -36,7 +36,11 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
 ## Setup
 Install Python Packages
     
-    pip install -r requirements.txt
+    pip install numpy
+
+    pip install matplotlib
+
+    pip install shapely
 
 Test Simulation with render
 
