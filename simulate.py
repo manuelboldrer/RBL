@@ -35,6 +35,8 @@ def simulate( h, P ):
     current_position_x = np.zeros(P["N"])
     current_position_y = np.zeros(P["N"])
     th                 = [0] * P["N"]  
+    flag_convergence   = 0
+    waiting_time       = 100
     
     if P["manual"] == 1:
         Robots = RobotsInit1(P)
@@ -72,7 +74,7 @@ def simulate( h, P ):
     ax1.grid()
 
 
-    while sum(flag) < P["N"] and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached         
+    while flag_convergence < waiting_time and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached         
         if P["flag_plot"] == 1:
             for j in range(P["N"]): 
                 if Robots.positions[j][0] < minX:
@@ -142,10 +144,14 @@ def simulate( h, P ):
                 flag[j] = 1
             else:
                 flag[j] = 0
+            if sum(flag) == P["N"]:
+                flag_convergence = flag_convergence+1
 
-            if sum(flag) == P["N"] and j ==P["N"]-1:
+            if sum(flag) == P["N"]  and flag_convergence == 1:
                 print("travel time:", round(step*P["dt"],3), "(s).  max velocity:", round(tmp,3), "(m/s)")
+            if flag_convergence == waiting_time-1:
                 plt.close()
+
             if P["write_file"] == 1:
                 with open(file_path, 'a') as file:
                     size = P["size"]
