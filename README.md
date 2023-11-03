@@ -16,7 +16,7 @@ This is the implementation of the Heuristic Lloyd-based algorithm (HLB) for mult
 The simulator can run on all major platforms (Windows, Linux, and macOS). All that is required is cloning the repository and installing some necessary dependencies.
 
 
-    git clone https://github.com/manuelboldrer/HLB
+    git clone https://github.com/manuelboldrer/RBL
 
 ### Reference
 In this repository there is part of the code that was used to generate simulation results in the following paper: 
