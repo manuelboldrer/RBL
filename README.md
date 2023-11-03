@@ -24,9 +24,9 @@ In this repository there is part of the code that was used to generate simulatio
 "Distributed Networkless Multi-Robot Navigation in Crowded Cooperative Environments."
 Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Ferranti. Under Review at ...
 
-**[`PDF_arxiv`](https://arxiv.org/pdf/????)** 
+**[`PDF_arxiv`](https://arxiv.org/pdf/2310.19511.pdf)** 
 
-**[`Youtube video`](https://youtube/????)** 
+**[`Youtube video`](https://www.youtube.com/watch?v=ZCm-KYHxNG4)** 
  
 
 ### Prerequisites
