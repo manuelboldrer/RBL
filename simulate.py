@@ -11,9 +11,9 @@ import copy
 
 def check_parameters(P):
     for j in range(P["N"]):
-        if (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) < 2*P["size"][j]:
+        if (((P["radius"]-P["betaD"][j])*math.exp(2*P["radius"]/P["betaD"][j])+P["radius"]+P["betaD"][j])/(math.exp(2*P["radius"]/P["betaD"][j])-1)) < 2*P["size"][j]:
             print("Error type 1. parameters not selected correctly. Safety and convergence may be compromized ")
-        if P["d3"] >  (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) - 2*P["size"][j] or P["d1"] > (((P["radius"]-P["R_gaussianD"][j])*math.exp(2*P["radius"]/P["R_gaussianD"][j])+P["radius"]+P["R_gaussianD"][j])/(math.exp(2*P["radius"]/P["R_gaussianD"][j])-1)) - 2*P["size"][j]:
+        if P["d3"] >  (((P["radius"]-P["betaD"][j])*math.exp(2*P["radius"]/P["betaD"][j])+P["radius"]+P["betaD"][j])/(math.exp(2*P["radius"]/P["betaD"][j])-1)) - 2*P["size"][j] or P["d1"] > (((P["radius"]-P["betaD"][j])*math.exp(2*P["radius"]/P["betaD"][j])+P["radius"]+P["betaD"][j])/(math.exp(2*P["radius"]/P["betaD"][j])-1)) - 2*P["size"][j]:
             print("Error type 2. pcarameters not selected correctly. It may not converge.")
         if P["k"][j]*P["dt"]> 1:
             print("k_p is too big or dt is to big, safety issues")
@@ -36,7 +36,6 @@ def simulate( h, P ):
     current_position_y = np.zeros(P["N"])
     th                 = [0] * P["N"]  
     flag_convergence   = 0
-    waiting_time       = 100
     
     if P["manual"] == 1:
         Robots = RobotsInit1(P)
@@ -55,7 +54,7 @@ def simulate( h, P ):
 
 
 
-    R_gaussian       = copy.deepcopy(P["R_gaussianD"])    #spreding factor
+    beta       = copy.deepcopy(P["betaD"])    #spreding factor
     Lloyd            = [0] * P["N"]
     Lloyd_virtual    = [0] * P["N"]
     #Lloyd_virtual1   = [0] * P["N"]
@@ -74,7 +73,7 @@ def simulate( h, P ):
     ax1.grid()
 
 
-    while flag_convergence < waiting_time and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached         
+    while flag_convergence < P["waiting_time"] and step <P["num_steps"]: # until all robots reach their goal or the number of steps is reached         
         if P["flag_plot"] == 1:
             for j in range(P["N"]): 
                 if Robots.positions[j][0] < minX:
@@ -93,14 +92,14 @@ def simulate( h, P ):
             start = time.time()
             position_other_robots_and_humans = np.delete(Robots.positions, j , axis=0)
             if j < P["N_h"]:
-                Lloyd[j].aggregate([] , R_gaussian[j], Robots.destinations[j])   
-                Lloyd_virtual[j].aggregate([], R_gaussian[j], goal[j])
-                #Lloyd_virtual1[j].aggregate([], R_gaussian[j], goal[j])
+                Lloyd[j].aggregate([] , beta[j], Robots.destinations[j])   
+                Lloyd_virtual[j].aggregate([], beta[j], goal[j])
+                #Lloyd_virtual1[j].aggregate([], beta[j], goal[j])
 
             else:
-                Lloyd[j].aggregate(position_other_robots_and_humans , R_gaussian[j], Robots.destinations[j])   
-                Lloyd_virtual[j].aggregate(position_other_robots_and_humans, R_gaussian[j], goal[j])
-                #Lloyd_virtual1[j].aggregate(position_other_robots, R_gaussian[j], goal[j])
+                Lloyd[j].aggregate(position_other_robots_and_humans , beta[j], Robots.destinations[j])   
+                Lloyd_virtual[j].aggregate(position_other_robots_and_humans, beta[j], goal[j])
+                #Lloyd_virtual1[j].aggregate(position_other_robots, beta[j], goal[j])
             
                     
             c1[j],c2[j] = Lloyd[j].get_centroid()
@@ -112,17 +111,17 @@ def simulate( h, P ):
                 tmp = np.sqrt(u[0]**2+u[1]**2)
             d2 = 3 * max(P["size"])
             d4 = d2
-            applyrules(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4)
+            applyrules(j, P, beta, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4)
 
             #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
             #d2 = 3*max(P["size"])
             #d4 = d2
             ##if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
             #if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
-            #    R_gaussian[j] = R_gaussian[j] - 1*P["dt"]
-            #    R_gaussian[j] = max(R_gaussian[j], P["R_gauss_min"])
+            #    beta[j] = beta[j] - 1*P["dt"]
+            #    beta[j] = max(beta[j], P["R_gauss_min"])
             #else:
-            #    R_gaussian[j]= R_gaussian[j] - 1*P["dt"]*(R_gaussian[j]-P["R_gaussianD"][j])
+            #    beta[j]= beta[j] - 1*P["dt"]*(beta[j]-P["betaD"][j])
                  #equation (9)
             #if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d4 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d3"]:# and distancemin[j] < size[j]+max(size)+1:
             #    th[j] = min(th[j] + 1*P["dt"], math.pi/2.1)
@@ -149,7 +148,7 @@ def simulate( h, P ):
 
             if sum(flag) == P["N"]  and flag_convergence == 1:
                 print("travel time:", round(step*P["dt"],3), "(s).  max velocity:", round(tmp,3), "(m/s)")
-            if flag_convergence == waiting_time-1:
+            if flag_convergence == P["waiting_time"]-1:
                 plt.close()
 
             if P["write_file"] == 1:
@@ -157,7 +156,7 @@ def simulate( h, P ):
                     size = P["size"]
                     dt = P["dt"]
                     k = P["k"]
-                    data = f"{step},{j},{current_position[j][0]},{current_position[j][1]},{goal[j][0]},{goal[j][1]},{R_gaussian[j]},{size[j]},{c1[j][0]},{c1[j][1]},{k[j]},{dt}\n"
+                    data = f"{step},{j},{current_position[j][0]},{current_position[j][1]},{goal[j][0]},{goal[j][1]},{beta[j]},{size[j]},{c1[j][0]},{c1[j][1]},{k[j]},{dt}\n"
                     file.write(data)
             #ind = []
             #for ii in range(P["N"]):
@@ -192,7 +191,7 @@ def simulate( h, P ):
                    #plot_circle(current_position[j],P["size"][j],'red')
                    #ax1.plot_line((current_position[j][0],current_position[j][1]),(goal[j][0],goal[j][1]))
             for j in range(P["N"]):
-                circle = patches.Circle((current_position[j][0], current_position[j][1]), P["size"][j], fill=False, color=(R_gaussian[j]/max(P["R_gaussianD"]),0.7,0.7))
+                circle = patches.Circle((current_position[j][0], current_position[j][1]), P["size"][j], fill=False, color=(beta[j]/max(P["betaD"]),0.7,0.7))
                 circlegoals = patches.Circle((goal[j][0], goal[j][1]), 0.05, fill=True, color=((j+1)/(P["N"]+1),0.7,0.7))
 
                 ax1.add_patch(circle)     

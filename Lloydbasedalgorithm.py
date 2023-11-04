@@ -14,9 +14,9 @@ class LloydBasedAlgorithm:
         self.robot_pos = robot_pos                  # initial robot position
         self.v_max = v_max
 
-    def aggregate(self, neighbors, R_gaussian, destination):
+    def aggregate(self, neighbors, beta, destination):
         self.neighbors = neighbors
-        self.R_gaussian = R_gaussian
+        self.beta = beta
         self.destination = destination
         self.filter_neighbors()
 
@@ -86,7 +86,7 @@ class LloydBasedAlgorithm:
         y_test = np.array(y_test)
         tmp = np.column_stack((x_test - self.destination[0], y_test - self.destination[1]))
         distances = np.linalg.norm(tmp, axis=1)       
-        scalar_values = np.exp(-distances / self.R_gaussian)
+        scalar_values = np.exp(-distances / self.beta)
         return scalar_values.tolist()
     
     def account_encumbrance(self, points):
@@ -189,16 +189,16 @@ def compute_centroid(x, y, scalar_values):
     centroid_y = np.sum(y * scalar_values) / total_weight
     return centroid_x, centroid_y
 
-def applyrules(j, P, R_gaussian, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4):
+def applyrules(j, P, beta, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4):
     c1_j = np.array(c1[j])
     current_j = np.array(current_position[j])
 
     # first condition
     dist_c1_c2 = np.linalg.norm(c1_j - np.array(c2[j]))
     if dist_c1_c2 > d2 and np.linalg.norm(current_j - c1_j) < P["d1"]:
-        R_gaussian[j] = max(R_gaussian[j] - P["dt"], P["R_gauss_min"])
+        beta[j] = max(beta[j] - P["dt"], P["beta_min"])
     else:
-        R_gaussian[j] = R_gaussian[j] - P["dt"] * (R_gaussian[j] - P["R_gaussianD"][j])
+        beta[j] = beta[j] - P["dt"] * (beta[j] - P["betaD"][j])
 
     # second condition
     dist_c1_c2_d4 = dist_c1_c2 > d4
