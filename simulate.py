@@ -113,33 +113,10 @@ def simulate( h, P ):
             d4 = d2
             applyrules(j, P, beta, current_position, c1, c2, th, goal, Robots, c1_no_rotation, d2, d4)
 
-            #Apply the Heuristic inputs to modify Rgaussian and Robots.destinations on the basis of c1 and c2          
-            #d2 = 3*max(P["size"])
-            #d4 = d2
-            ##if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
-            #if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d2 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d1"]:
-            #    beta[j] = beta[j] - 1*P["dt"]
-            #    beta[j] = max(beta[j], P["R_gauss_min"])
-            #else:
-            #    beta[j]= beta[j] - 1*P["dt"]*(beta[j]-P["betaD"][j])
-                 #equation (9)
-            #if abs(np.linalg.norm(np.array(c1[j]) - np.array(c2[j]))) > d4 and np.linalg.norm(np.array(current_position[j]) - np.array(c1[j])) < P["d3"]:# and distancemin[j] < size[j]+max(size)+1:
-            #    th[j] = min(th[j] + 1*P["dt"], math.pi/2.1)
-            #else:
-            #    th[j] = max(0, th[j] - 1*P["dt"] )
-            #if th[j] == math.pi/2.1 and abs(np.linalg.norm(np.array(current_position[j]) - np.array(c1_no_rotation[j]))  > np.linalg.norm(np.array(current_position[j]) - np.array(c1[j]))):
-            #    th[j] = 0 
-            #angle     = math.atan2(goal[j][1] - current_position[j][1], goal[j][0] - current_position[j][0])
-            #new_angle = angle - th[j]
-            #distance  = math.sqrt((goal[j][0] - current_position[j][0])**2 + (goal[j][1] - current_position[j][1])**2)
-            #Robots.destinations[j][0] = current_position[j][0] + distance * math.cos(new_angle)
-            #Robots.destinations[j][1] = current_position[j][1] + distance * math.sin(new_angle)
-            #end = time.time()
             
-            #print(end-start)
             #condition used for stop the simulation
 
-            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) <= P["radius"]:#d2+P["dx"]:
+            if  math.sqrt((current_position[j][0]-goal[j][0])**2 + (current_position[j][1]-goal[j][1])**2) <= P["radius"]:
                 flag[j] = 1
             else:
                 flag[j] = 0
@@ -158,31 +135,10 @@ def simulate( h, P ):
                     k = P["k"]
                     data = f"{step},{j},{current_position[j][0]},{current_position[j][1]},{goal[j][0]},{goal[j][1]},{beta[j]},{size[j]},{c1[j][0]},{c1[j][1]},{k[j]},{dt}\n"
                     file.write(data)
-            #ind = []
-            #for ii in range(P["N"]):
-            #    for i in range((P["N"])):
-            #        if i!=ii:
-            #            ind1,ind2 = check_collision(current_position_x[ii],current_position_y[ii],P["size"][ii]+0.2,current_position_x[i],current_position_y[i],P["size"][i],i,ii)
-
-           #             if ind1 < P["N_h"] and ind1 != -1 and ind2 > P["N_h"]-1 :
-           #                 ind.append(ind1)
-           #             if ind2 < P["N_h"] and ind2 != -1 and ind1 > P["N_h"]-1 :
-           #                 ind.append(ind2)
-
-                        #if ((ind1>P["N_h"]-1 and  ind2<P["N_h"]) or (ind2>P["N_h"]-1 and ind1<P["N_h"]))  and step>1:
-                        #    print("collision",ind1,ind2)
-                        #    if ind1<P["N_h"]:   
-                        #        ind =ind1
-                        ##    else:
-                         #       ind = ind2
-                         #   if ind1 == -1: 
-                         #       ind = ind1
+            
             current_position_x[j], current_position_y[j] = Lloyd[j].move()
             current_position[j] = current_position_x[j], current_position_y[j]    
-            #if j not in ind :            
-           
-            #else:
-            #    current_position[j] = current_position_x[j], current_position_y[j]   
+
         if P["flag_plot"] == 1:
             circles = []
 
@@ -202,7 +158,6 @@ def simulate( h, P ):
             plt.pause(0.001)
             for circle in ax1.patches:
                 circle.remove()
-            #fig1.canvas.flush_events()
 
 
 
