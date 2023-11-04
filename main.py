@@ -31,7 +31,7 @@ parameters = {
         "N_h": 0,                       # Number of non-cooperative, not used          
         "k_h": 6,                       # not used                     
         "manual": 0,                    # if you want to set initial positions and goals manually set to 1
-        "waiting_time":  100,     # waiting time after all the robots enter their goal regions.
+        "waiting_time":  400,     # waiting time after all the robots enter their goal regions.
 
 }
 if parameters["N_h"]>0:
