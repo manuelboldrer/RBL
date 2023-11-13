@@ -30,8 +30,7 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
  
 
 ### Prerequisites
-- Python Packages as defined in [requirements.txt](requirements.txt) 
-(matplotlib, numpy, shapely)
+matplotlib, numpy, shapely
 
 ## Setup
 Install Python Packages
