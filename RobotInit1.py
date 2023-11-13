@@ -12,7 +12,7 @@ class RobotsInit1:
         self.destinations = []  # Store robot goal positions
         self.fig, self.ax = plt.subplots()
         self.ax.set_xlim(parameters["xlim"])
-        self.ax.set_ylim(parameters["xlim"])
+        self.ax.set_ylim(parameters["ylim"])
         self.ax.set_title("Click to set robot positions and goals")
         self.ax.set_xlabel("X")
         self.ax.set_ylabel("Y")

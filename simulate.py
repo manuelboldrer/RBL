@@ -149,9 +149,11 @@ def simulate( h, P ):
             for j in range(P["N"]):
                 circle = patches.Circle((current_position[j][0], current_position[j][1]), P["size"][j], fill=False, color=(beta[j]/max(P["betaD"]),0.7,0.7))
                 circlegoals = patches.Circle((goal[j][0], goal[j][1]), 0.05, fill=True, color=((j+1)/(P["N"]+1),0.7,0.7))
+                regiongoals = patches.Circle((goal[j][0], goal[j][1]), P["radius"], fill=True, alpha = 0.1, color=((j+1)/(P["N"]+1),0.7,0.7))
 
                 ax1.add_patch(circle)     
                 ax1.add_patch(circlegoals)
+                ax1.add_patch(regiongoals)
 
             fig1.canvas.flush_events()
 

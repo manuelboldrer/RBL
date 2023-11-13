@@ -3,7 +3,7 @@ import argparse
 from simulate import simulate
 from simulate import check_parameters
 
-N = 20                                 # Number of robots.
+N = 50                                # Number of robots.
 
 parameters = {
 
@@ -12,9 +12,9 @@ parameters = {
 
         "R_circle": 0,                  # If greater than 0, robots in a circle (radius of the circle)
                                         # If equal to 0, robots in a random room
-        "radius": 1.5,                    # Half of the sensing radius: dimension of the cells r_{s,i}=r_{s}
-        "xlim": (0, 5),                 # Random room dimensions on the X-axis
-        "ylim": (0, 5),                 # Random room dimensions on the Y-axis
+        "radius": 1,                    # Half of the sensing radius: dimension of the cells r_{s,i}=r_{s}
+        "xlim": (0, 10),                 # Random room dimensions on the X-axis
+        "ylim": (0, 10),                 # Random room dimensions on the Y-axis
         "N": N,                         # Number of robots
         "num_steps": 5000,              # Number of simulation steps
         "dx": 0.1,                      # Space discretization [It introduce an approximation. The lower the better, but it is computationally expensive]
@@ -23,7 +23,7 @@ parameters = {
         "d3": 0.1,                      # d3 eq. (9) 
         "beta_min": 0.1,             # Minimum value for spreading factor rho 
         "betaD": [0.3]*N,         # Desired spreading factor \rho^D
-        "size": [random.uniform(0.3,0.3) for _ in range(N)],        # Robots encumbrance \delta
+        "size": [random.uniform(0.2,0.2) for _ in range(N)],        # Robots encumbrance \delta
         "k": [20]*N,                     # Control parameter k_p
         "flag_plot": 0,                 
         "write_file": 0,
