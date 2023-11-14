@@ -30,25 +30,6 @@ class LloydBasedAlgorithm:
         self.neighbors = neighbor_positions[valid_indices].tolist()
         self.size_neighbors = [self.size_neighbors_unfiltered[i] for i in valid_indices]
     
-    def find_closest_points_old(self, points):
-        # Convert points, robot_pos, and neighbors to NumPy arrays for easy computation
-        points = np.array(points)
-        robot_pos = np.array(self.robot_pos)
-        neighbors = np.array(self.neighbors)
-
-        # Compute the distances between points and robot_pos
-        distances_to_robot = np.linalg.norm(points - robot_pos, axis=1)
-
-        # Compute the distances between points and neighbors
-        distances_to_neighbors = np.linalg.norm(points[:, np.newaxis] - neighbors, axis=2)
-
-        # Check if the distance to robot_pos is less than all distances to neighbors
-        closer_points_mask = np.all(distances_to_robot[:, np.newaxis] < distances_to_neighbors, axis=1)
-
-        # Filter the points that are closer to robot_pos than all the neighbors
-        closer_points = points[closer_points_mask]
-
-        return closer_points.tolist()
 
     def points_inside_circle(self):
         x_center, y_center = self.robot_pos
@@ -218,19 +199,3 @@ def applyrules(j, P, beta, current_position, c1, c2, th, goal, Robots, c1_no_rot
     Robots.destinations[j][0] = current_j[0] + distance * math.cos(new_angle)
     Robots.destinations[j][1] = current_j[1] + distance * math.sin(new_angle)
 
-def points_inside_circle0(self):
-            x_min = int(( self.radius) / self.step_size)
-            x_max = int(( self.radius) / self.step_size)
-            y_min = int(( self.radius) / self.step_size)
-            y_max = int(( self.radius) / self.step_size)
-
-            x_coords = np.arange(x_min, x_max + 1) * self.step_size
-            y_coords = np.arange(y_min, y_max + 1) * self.step_size
-
-            x, y = np.meshgrid(x_coords, y_coords)
-            distances = np.sqrt((x) ** 2 + (y) ** 2)
-            
-            valid_indices = np.where(distances <= self.radius)
-            points = list(zip(x[valid_indices], y[valid_indices]))
-
-            return points
