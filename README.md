@@ -30,16 +30,12 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
  
 
 ### Prerequisites
-matplotlib, numpy, shapely
+matplotlib, numpy
 
 ## Setup
 Install Python Packages
     
-    pip install numpy
-
-    pip install matplotlib
-
-    pip install shapely
+    pip install numpy matplotlib
 
 Test Simulation with render
 
