@@ -1,11 +1,12 @@
+from RobotSimulation import RobotSimulation
+import matplotlib.pyplot as plt
 import random
-import argparse
-from simulate import simulate
-from simulate import check_parameters
 
-N = 50                                # Number of robots.
+def main():
+    # Define your simulation parameters
+    N = 30                                # Number of robots.
 
-parameters = {
+    parameters = {
 
     #The parameters have to be set as is indicated in the paper https://arxiv.org/abs/2310.19511.
     #Notice Remark 4: the discretization dx of the cells introduces approximations: beta and dx has to be set properly.
@@ -22,37 +23,33 @@ parameters = {
         "d1": 0.1,                      # d1 eq. (8) 
         "d3": 0.1,                      # d3 eq. (9) 
         "beta_min": 0.1,             # Minimum value for spreading factor rho 
-        "betaD": [0.3]*N,         # Desired spreading factor \rho^D
-        "size": [random.uniform(0.2,0.2) for _ in range(N)],        # Robots encumbrance \delta
+        "betaD": [0.5]*N,         # Desired spreading factor \rho^D
+        "size": [random.uniform(0.1,0.1) for _ in range(N)],        # Robots encumbrance \delta
         "k": [20]*N,                     # Control parameter k_p
-        "flag_plot": 0,                 
-        "write_file": 0,
-        "v_max": [100]*N,               # Maximum velocity for each robot
+        "flag_plot": 1,                 
+        "write_file": 1,
+        "v_max": [5]*N,               # Maximum velocity for each robot
         "N_h": 0,                       # Number of non-cooperative, not used          
         "k_h": 6,                       # not used                     
         "manual": 0,                    # if you want to set initial positions and goals manually set to 1
         "waiting_time":  400,     # waiting time after all the robots enter their goal regions.
+        "h":1,
 
-}
-if parameters["N_h"]>0:
-    parameters["v_max"][:parameters["N_h"]-1] = [parameters["k_h"]]*parameters["N_h"]
+    }
 
-parser = argparse.ArgumentParser(description= "HLB.")
-parser.add_argument("-render", action="store_true", help = "Activate rendering")
-parser.add_argument("-writefile", action="store_true", help = "Write to a file")
-args = parser.parse_args()
-if args.render:
-    parameters["flag_plot"] = 1
-if args.writefile:
-    parameters["write_file"] = 1
+    # Create an instance of RobotSimulation
+    robot_simulation = RobotSimulation(parameters)
 
-if parameters["manual"] != 1:
-    repetitions = 200
-else:
-    repetitions = 1
-check_parameters(parameters)
+    # Check simulation parameters
+    robot_simulation.check_parameters()
 
-for h in range(0, repetitions):
-    print("Number of repetition", h, "of", repetitions)
-    simulate( h, parameters)
+    # Initialize the simulation
+    robot_simulation.initialize_simulation()
 
+    # Main simulation loop
+    while robot_simulation.flag_convergence < robot_simulation.P["waiting_time"] and robot_simulation.step < robot_simulation.P["num_steps"]:
+        
+            robot_simulation.simulate_step()
+
+if __name__ == "__main__":
+    main()

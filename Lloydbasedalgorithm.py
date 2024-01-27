@@ -12,7 +12,7 @@ class LloydBasedAlgorithm:
         self.time_step = dt                         # time step
         self.size_neighbors_unfiltered = size_neighbors       # neighbours' encumbrance
         self.robot_pos = robot_pos                  # initial robot position
-        self.v_max = v_max
+        self.v_max = v_max                          # max velocity of robots
 
     def aggregate(self, neighbors, beta, destination):
         self.neighbors = neighbors
@@ -30,7 +30,6 @@ class LloydBasedAlgorithm:
         self.neighbors = neighbor_positions[valid_indices].tolist()
         self.size_neighbors = [self.size_neighbors_unfiltered[i] for i in valid_indices]
     
-
     def points_inside_circle(self):
         x_center, y_center = self.robot_pos
         x_min = int((x_center - self.radius) / self.step_size)
@@ -162,6 +161,7 @@ class LloydBasedAlgorithm:
         next_y =  y +  velocity_y * self.time_step
         self.robot_pos = next_x, next_y
         return next_x, next_y
+
 
 
 def compute_centroid(x, y, scalar_values):
