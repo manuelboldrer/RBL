@@ -30,20 +30,15 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
  
 
 ### Prerequisites
-matplotlib, numpy
+matplotlib, numpy, scipy
 
 ## Setup
 Install Python Packages
     
-    pip install numpy matplotlib
-
-Test Simulation with render
-
-    python main.py -render
-
-Test Simulation writing .txt file
-
-    python main.py -writefile
+    pip install numpy matplotlib scipy
+    
+## Test
+    python3 main.py 
 
 ## Acknowledgements
 
