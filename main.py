@@ -4,7 +4,7 @@ import random
 
 def main():
     # Define your simulation parameters
-    N = 30                                # Number of robots.
+    N = 50                                # Number of robots.
 
     parameters = {
 
