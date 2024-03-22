@@ -179,7 +179,10 @@ def applyrules(j, P, beta, current_position, c1, c2, th, goal, Robots, c1_no_rot
     if dist_c1_c2 > d2 and np.linalg.norm(current_j - c1_j) < P["d1"]:
         beta[j] = max(beta[j] - P["dt"], P["beta_min"])
     else:
+        print("before",beta[j])
         beta[j] = beta[j] - P["dt"] * (beta[j] - P["betaD"][j])
+        print(P["betaD"][j])
+        print("after",beta[j])
 
     # second condition
     dist_c1_c2_d4 = dist_c1_c2 > d4
@@ -191,7 +194,7 @@ def applyrules(j, P, beta, current_position, c1, c2, th, goal, Robots, c1_no_rot
     # third condition
     if th[j] == math.pi / 2 and np.linalg.norm(current_j - np.array(c1_no_rotation[j])) > np.linalg.norm(current_j - c1_j):
         th[j] = 0
-
+    print(beta[j], th[j])
     # Compute the angle and new position
     angle = math.atan2(goal[j][1] - current_j[1], goal[j][0] - current_j[0])
     new_angle = angle - th[j]

@@ -30,7 +30,7 @@ class RobotSimulation:
         self.Lloyd = None
         self.Lloyd_virtual = None
         self.Robots = None
-        self.beta = self.P["betaD"]
+        self.beta = self.P["betaD"].copy() #[0.5] * self.P["N"]
 
     def initialize_simulation(self):
         if self.P["manual"] == 1:
