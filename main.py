@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import random
 
 def main():
-    # Define your simulation parameters
     N = 50                                # Number of robots.
 
     parameters = {
