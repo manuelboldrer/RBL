@@ -21,17 +21,17 @@ def main():
         "dt": 0.033,                    # Time discretization 
         "d1": 0.1,                      # d1 eq. (8) 
         "d3": 0.1,                      # d3 eq. (9) 
-        "beta_min": 0.1,             # Minimum value for spreading factor rho 
-        "betaD": [0.5]*N,         # Desired spreading factor \rho^D
+        "beta_min": 0.1,                # Minimum value for spreading factor rho 
+        "betaD": [0.5]*N,               # Desired spreading factor \rho^D
         "size": [random.uniform(0.1,0.1) for _ in range(N)],        # Robots encumbrance \delta
         "k": [20]*N,                     # Control parameter k_p
         "flag_plot": 1,                 
         "write_file": 1,
-        "v_max": [5]*N,               # Maximum velocity for each robot
+        "v_max": [5]*N,                 # Maximum velocity for each robot
         "N_h": 0,                       # Number of non-cooperative, not used          
         "k_h": 6,                       # not used                     
         "manual": 0,                    # if you want to set initial positions and goals manually set to 1
-        "waiting_time":  400,     # waiting time after all the robots enter their goal regions.
+        "waiting_time":  400,           # waiting time after all the robots enter their goal regions.
         "h":1,
 
     }
