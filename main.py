@@ -3,13 +3,12 @@ import matplotlib.pyplot as plt
 import random
 
 def main():
-    N = 50        # Number of robots.
 
+    N = 50        # Number of robots
     parameters = {
 
     #The parameters have to be set as is indicated in the paper https://arxiv.org/abs/2310.19511.
-    #Notice Remark 4: the discretization dx of the cells introduces approximations: beta and dx has to be set properly.
-
+   
         "R_circle": 0,                  # If greater than 0, robots in a circle (radius of the circle)
                                         # If equal to 0, robots in a random room
         "radius": 1,                    # Half of the sensing radius: dimension of the cells r_{s,i}=r_{s}
@@ -33,14 +32,10 @@ def main():
         "manual": 0,                    # if you want to set initial positions and goals manually set to 1
         "waiting_time":  400,           # waiting time after all the robots enter their goal regions.
         "h":1,
-
     }
 
     # Create an instance of RobotSimulation
     robot_simulation = RobotSimulation(parameters)
-
-    # Check simulation parameters
-    robot_simulation.check_parameters()
 
     # Initialize the simulation
     robot_simulation.initialize_simulation()

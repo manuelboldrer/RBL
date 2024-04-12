@@ -59,20 +59,6 @@ class RobotSimulation:
         self.ax1.set_ylabel("Y")
         self.ax1.grid()
 
-    def check_parameters(self):
-        for j in range(self.P["N"]):
-            if (((self.P["radius"] - self.P["betaD"][j]) * math.exp(2 * self.P["radius"] / self.P["betaD"][j]) +
-                 self.P["radius"] + self.P["betaD"][j]) / (math.exp(2 * self.P["radius"] / self.P["betaD"][j]) - 1)) < 2 * self.P["size"][j]:
-                print("Error type 1. parameters not selected correctly. Safety and convergence may be compromised ")
-            if self.P["d3"] > (((self.P["radius"] - self.P["betaD"][j]) * math.exp(2 * self.P["radius"] / self.P["betaD"][j]) +
-                                self.P["radius"] + self.P["betaD"][j]) / (math.exp(2 * self.P["radius"] / self.P["betaD"][j]) - 1)) - 2 * self.P["size"][j] or \
-                    self.P["d1"] > (((self.P["radius"] - self.P["betaD"][j]) * math.exp(2 * self.P["radius"] / self.P["betaD"][j]) +
-                                     self.P["radius"] + self.P["betaD"][j]) / (math.exp(2 * self.P["radius"] / self.P["betaD"][j]) - 1)) - 2 * self.P["size"][j]:
-                print("Error type 2. parameters not selected correctly. It may not converge.")
-            if self.P["k"][j] * self.P["dt"] > 1:
-                print("k_p is too big or dt is too big, safety issues")
-            if self.P["k"][j] < 1:
-                print("Warning, of kp may be too small")
                
     def simulate_step(self):
         self.step += 1
