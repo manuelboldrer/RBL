@@ -44,6 +44,7 @@ Install Python Packages
 Giovanni Franzese,
 Alvaro Serra Gomez,
 Lorenzo Lyons,
+Vit Kratky,
 Laura Ferranti,
 Javier Alonso-Mora.
 
