@@ -29,12 +29,12 @@ Manuel Boldrer, Alvaro Serra-Gomez, Lorenzo Lyons, Javier Alonso-Mora, Laura Fer
  
 
 ### Prerequisites
-matplotlib, numpy, scipy
+matplotlib, numpy
 
 ## Setup
 Install Python Packages
     
-    pip install numpy matplotlib scipy
+    pip install numpy matplotlib 
     
 ## Test
     python3 main.py 
